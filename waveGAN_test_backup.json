@@ -1,0 +1,80 @@
+{
+    "_description": "Pre-trained Denoiser Defense for ASR",
+    "adhoc": {
+        "skip_adversarial": false
+    },
+    "attack": {
+        "knowledge": "white",
+        "kwargs": {
+            "batch_size": 1,
+            "eps": 0.01,
+            "eps_step": 0.002,
+            "max_iter": 7,
+            "norm": "inf",
+            "num_random_init": 0,
+            "random_eps": false,
+            "targeted": false,
+            "verbose": false
+        },
+        "module": "art.attacks.evasion",
+        "name": "ProjectedGradientDescent",
+        "targeted": false,
+        "use_label": false
+    },
+    "dataset": {
+        "batch_size": 1,
+        "eval_split": "test_clean",
+        "framework": "numpy",
+        "module": "armory.data.datasets",
+        "name": "librispeech",
+        "train_split": "train_clean100"
+    },
+    "defense": {
+        "kwargs": {
+            "apply_fit": false,
+            "apply_predict": true,
+            "channels_first": false,
+            "verbose": false
+        },
+        "module": "waveGAN_pytorch",
+        "name": "WaveGANTorch",
+        "type": "Preprocessor"},
+    "metric": {
+        "means": false,
+        "perturbation": "snr_db",
+        "record_metric_per_sample": true,
+        "task": [
+            "word_error_rate"
+        ]
+    },
+    "model": {
+        "fit": false,
+        "fit_kwargs": {
+            "nb_epochs": 20000
+        },
+        "model_kwargs": {},
+        "module": "asr_model_test",
+        "name": "get_art_model",
+        "predict_kwargs": {
+            "transcription_output": true
+        },
+        "weights_file": "/home1/asreeram/armory/armory-example/30-70-clean-melgan-WGN-ftASR.ckpt",
+        "wrapper_kwargs": {
+
+        }
+    },
+    "scenario": {
+        "kwargs": {},
+        "module": "armory.scenarios.audio_asr",
+        "name": "AutomaticSpeechRecognition"
+    },
+    "sysconfig": {
+        "docker_image": "rperi/sail_gard_asr:0.1",
+        "external_github_repo": "",
+        "gpus": "all",
+        "local_repo_path": null,
+        "output_dir": null,
+        "output_filename": null,
+        "use_gpu": true
+    }
+}
